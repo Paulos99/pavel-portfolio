@@ -95,103 +95,101 @@ button, input, textarea { font: inherit; color: inherit; }
   .nav-toggle, .mobile-nav { display: none !important; }
 }
 
-.hero { padding: clamp(2.5rem, 7vw, 4.5rem) 0 2rem; }
+.hero {
+  padding: clamp(2.2rem, 6vw, 4rem) 0 1.5rem;
+  overflow: visible;
+}
 .hero-kicker {
   display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;
-  margin: 0 0 1.25rem; color: var(--muted); font-size: 0.92rem;
+  margin: 0 0 1rem; color: var(--muted); font-size: 0.92rem;
 }
 .neon-tag, .neon-badge {
   display: inline-flex; align-items: center; background: var(--neon); color: var(--neon-ink);
   font-weight: 800; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase;
   padding: 0.35rem 0.65rem; border-radius: 999px;
 }
-.hero-stage {
-  position: relative; display: grid; gap: 1.25rem; align-items: center;
-  min-height: clamp(280px, 48vw, 460px);
-}
 .hero-display {
-  margin: 0; font-family: var(--display); font-weight: 400; line-height: 0.86;
-  font-size: clamp(4.6rem, 18vw, 11rem); letter-spacing: 0.01em;
+  margin: 0; font-family: var(--display); font-weight: 400; line-height: 0.88;
+  font-size: clamp(3.6rem, 14vw, 8.5rem); letter-spacing: 0.01em;
+  max-width: 100%;
 }
 .hero-display .line { display: block; }
-.hero-display .line-b { color: transparent; -webkit-text-stroke: 2px var(--ink); }
-.hero-card {
-  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
-  padding: 1.25rem; box-shadow: 0 20px 50px rgba(0,0,0,0.08);
-  max-width: 320px;
+.hero-display .line-b {
+  color: transparent; -webkit-text-stroke: 2px var(--ink);
 }
-.hero-card-label {
-  margin: 0 0 0.5rem; text-transform: uppercase; letter-spacing: 0.1em;
-  font-size: 0.7rem; font-weight: 700; color: var(--muted);
+.hero-sub {
+  margin: 0.35rem 0 1.5rem;
+  font-family: var(--display);
+  font-size: clamp(1.2rem, 3vw, 1.7rem);
+  letter-spacing: 0.04em;
+  color: var(--muted);
 }
-.hero-card-text { margin: 0 0 1rem; font-size: 0.98rem; }
-.hero-side {
-  display: none; /* was overlapping hero-card */
-  margin: 0; font-family: var(--display); font-size: clamp(1.4rem, 4vw, 2rem);
-  letter-spacing: 0.04em; color: var(--muted);
+.hero-row {
+  display: grid;
+  gap: 1.1rem;
+  align-items: stretch;
+  grid-template-columns: 1fr;
 }
-.hero-bottom {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin-top: 1.75rem;
-}
-.hero-note { margin: 0; color: var(--muted); max-width: 26rem; font-size: 0.95rem; }
-
 .hero-portrait {
+  margin: 0;
   position: relative;
-  z-index: 2;
-  width: min(280px, 70vw);
-  margin: 0.5rem 0 0;
   border-radius: 28px;
   overflow: hidden;
-  box-shadow: 0 24px 60px rgba(0,0,0,0.18);
   border: 1px solid var(--line);
-  justify-self: start;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+  max-width: 340px;
+  width: 100%;
 }
 .hero-portrait img {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
-  object-position: center 18%;
+  object-position: center 15%;
   filter: contrast(1.05) saturate(0.92);
 }
-.portrait-tag {
+.hero-portrait figcaption {
   position: absolute;
   left: 0.75rem;
   bottom: 0.75rem;
-  z-index: 2;
+  margin: 0;
 }
-@media (min-width: 900px) {
-  .hero-stage {
-    grid-template-columns: 1fr 280px 0.85fr;
-    grid-template-rows: auto;
-    align-items: end;
+.hero-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  max-width: 420px;
+}
+.hero-card-label {
+  margin: 0; text-transform: uppercase; letter-spacing: 0.1em;
+  font-size: 0.7rem; font-weight: 700; color: var(--muted);
+}
+.hero-card-text { margin: 0; font-size: 1rem; }
+.hero-card-actions {
+  display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 0.35rem;
+}
+@media (min-width: 860px) {
+  .hero-row {
+    grid-template-columns: minmax(220px, 300px) minmax(280px, 400px);
+    justify-content: start;
+    gap: 1.5rem;
   }
   .hero-display {
-    grid-column: 1 / -1;
-    grid-row: 1;
+    font-size: clamp(5rem, 11vw, 8.5rem);
   }
-  .hero-portrait {
-    grid-column: 2;
-    grid-row: 1;
-    width: 260px;
-    margin: 0 0 1.2rem;
-    align-self: end;
-  }
-  .hero-card {
-    grid-column: 3;
-    grid-row: 1;
-    justify-self: end;
-    align-self: end;
-    margin-bottom: 1.5rem;
-    z-index: 3;
+}
+@media (min-width: 1100px) {
+  .hero-row {
+    grid-template-columns: 300px 380px;
   }
 }
 
-
-@media (min-width: 900px) {
-  .hero-side { display: none; }
-}
 
 .btn {
   display: inline-flex; align-items: center; gap: 0.55rem; justify-content: center;
@@ -216,6 +214,9 @@ button, input, textarea { font: inherit; color: inherit; }
 .marquee {
   overflow: hidden; border-block: 1px solid var(--line); padding: 0.85rem 0;
   background: rgba(255,255,255,0.35);
+  margin-top: 1.25rem;
+  position: relative;
+  z-index: 1;
 }
 .marquee-track {
   display: flex; gap: 2.5rem; width: max-content;
