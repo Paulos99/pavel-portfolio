@@ -5,6 +5,7 @@
   const year = document.querySelector("[data-year]");
   const form = document.querySelector("[data-contact-form]");
   const status = document.querySelector("[data-form-status]");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (year) year.textContent = String(new Date().getFullYear());
 
@@ -30,7 +31,6 @@
     });
   }
 
-  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (!reduce && "IntersectionObserver" in window) {
     const io = new IntersectionObserver(
       (entries) => {
@@ -41,11 +41,27 @@
           }
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
     );
-    document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+    document.querySelectorAll(".reveal").forEach((el, i) => {
+      el.style.transitionDelay = `${Math.min(i % 6, 4) * 60}ms`;
+      io.observe(el);
+    });
   } else {
     document.querySelectorAll(".reveal").forEach((el) => el.classList.add("is-in"));
+  }
+
+  const tilt = document.querySelector("[data-tilt]");
+  if (tilt && !reduce && window.matchMedia("(pointer: fine)").matches) {
+    tilt.addEventListener("pointermove", (e) => {
+      const r = tilt.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      tilt.style.transform = `perspective(700px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg) translateY(-2px)`;
+    });
+    tilt.addEventListener("pointerleave", () => {
+      tilt.style.transform = "";
+    });
   }
 
   async function copyText(text) {
@@ -73,7 +89,6 @@
       const contact = String(data.get("contact") || "").trim();
       const task = String(data.get("task") || "").trim();
       const privacy = form.querySelector('[name="privacy"]');
-
       if (!name || !contact || !task || !(privacy && privacy.checked)) {
         if (status) {
           status.textContent = "Заполните имя, способ связи, задачу и согласие.";
@@ -81,7 +96,6 @@
         }
         return;
       }
-
       const brief = [
         "Заявка с портфолио paulos99.github.io/pavel-portfolio",
         `Имя: ${name}`,
@@ -90,18 +104,17 @@
         "Задача:",
         task,
       ].join("\n");
-
       try {
         const ok = await copyText(brief);
         if (status) {
           status.textContent = ok
-            ? "Заявка скопирована. Вставьте её в Telegram или письмо Павлу."
-            : "Не удалось скопировать. Выделите текст вручную из полей формы.";
+            ? "Заявка скопирована. Вставьте в Telegram или письмо."
+            : "Не удалось скопировать — скопируйте поля вручную.";
           status.className = ok ? "form-status is-ok" : "form-status is-err";
         }
       } catch (_) {
         if (status) {
-          status.textContent = "Не удалось скопировать. Воспользуйтесь формой на текущем сайте.";
+          status.textContent = "Не удалось скопировать.";
           status.className = "form-status is-err";
         }
       }
