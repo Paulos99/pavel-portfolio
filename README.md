@@ -8,7 +8,7 @@
 
 ## Кейсы
 
-- MultiFrame — https://stp-multiframe.ru/calc/ · repo https://github.com/Paulos99/MF_StP
+- MultiFrame — https://paulos99.github.io/MF_StP/ · repo https://github.com/Paulos99/MF_StP
 - СММ СФЕРА — https://smmsfera.ru/
 - Эславия — https://paulos99.github.io/eslavia/
 - ТРИЗ — https://paulos99.github.io/TRIZ/
