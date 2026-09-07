@@ -129,10 +129,11 @@
     const frame = root.querySelector(".preview-frame");
     if (!viewport || !frame) return;
     const mode = root.getAttribute("data-preview");
-    if (mode === "app" || mode === "interact") {
+    if (mode === "interact") {
       viewport.style.removeProperty("--preview-scale");
       return;
     }
+    // desktop + scroll: scale 1280px PC layout into pane
     const w = viewport.clientWidth || root.clientWidth;
     if (!w) return;
     const scale = w / PREVIEW_WIDTH;

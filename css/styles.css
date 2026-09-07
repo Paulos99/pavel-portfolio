@@ -392,30 +392,11 @@ button, input, textarea { font: inherit; color: inherit; }
 .preview-stage {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-rows: auto 1fr;
+  display: block;
   min-height: 100%;
   overflow: hidden;
   border-radius: inherit;
 }
-.preview-chrome {
-  display: flex;
-  gap: 0.35rem;
-  align-items: center;
-  padding: 0.5rem 0.75rem;
-  background: rgba(28, 28, 28, 0.96);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  z-index: 2;
-}
-.preview-chrome span {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #3a3a3a;
-}
-.preview-chrome span:nth-child(1) { background: #ff5f57; }
-.preview-chrome span:nth-child(2) { background: #febc2e; }
-.preview-chrome span:nth-child(3) { background: #28c840; }
 
 .preview-viewport {
   position: relative;
@@ -442,13 +423,20 @@ button, input, textarea { font: inherit; color: inherit; }
 .case-visual[data-preview="scroll"] .preview-frame.is-playing {
   animation: preview-reel 20s ease-in-out infinite alternate;
 }
+/* Desktop app (MultiFrame): PC width scale, no scroll reel */
+.case-visual[data-preview="desktop"] .preview-frame {
+  pointer-events: none;
+  animation: none !important;
+}
+.case-visual[data-preview="desktop"] .preview-viewport {
+  background: #111;
+}
 @keyframes preview-reel {
   0% { transform: scale(var(--preview-scale, 0.35)) translate3d(0, 0, 0); }
   100% { transform: scale(var(--preview-scale, 0.35)) translate3d(0, -52%, 0); }
 }
 
 /* Interactive / fullscreen app: cover the pane */
-.case-visual[data-preview="app"] .preview-viewport,
 .case-visual[data-preview="interact"] .preview-viewport {
   background: #0b0b0b;
 }
