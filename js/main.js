@@ -137,6 +137,7 @@
           if (root.getAttribute("data-preview") === "scroll") {
             frame.classList.add("is-playing");
           }
+          // app/interact: live iframe, no reel
           loadIo.unobserve(root);
         });
       },
