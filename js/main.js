@@ -120,4 +120,34 @@
       }
     });
   }
+
+  // Live case previews: load iframes when visible, play scroll reel
+  const previewRoots = document.querySelectorAll("[data-preview]");
+  if (previewRoots.length && "IntersectionObserver" in window) {
+    const loadIo = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const root = e.target;
+          const frame = root.querySelector(".preview-frame");
+          if (!frame) return;
+          if (frame.dataset.src && !frame.getAttribute("src")) {
+            frame.setAttribute("src", frame.dataset.src);
+          }
+          if (root.getAttribute("data-preview") === "scroll") {
+            frame.classList.add("is-playing");
+          }
+          loadIo.unobserve(root);
+        });
+      },
+      { rootMargin: "200px 0px", threshold: 0.05 }
+    );
+    previewRoots.forEach((el) => loadIo.observe(el));
+  } else {
+    document.querySelectorAll(".preview-frame").forEach((frame) => {
+      if (frame.dataset.src) frame.setAttribute("src", frame.dataset.src);
+      frame.classList.add("is-playing");
+    });
+  }
+
 })();
