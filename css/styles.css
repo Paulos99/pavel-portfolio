@@ -135,15 +135,61 @@ button, input, textarea { font: inherit; color: inherit; }
 }
 .hero-note { margin: 0; color: var(--muted); max-width: 26rem; font-size: 0.95rem; }
 
+.hero-portrait {
+  position: relative;
+  z-index: 2;
+  width: min(280px, 70vw);
+  margin: 0.5rem 0 0;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.18);
+  border: 1px solid var(--line);
+  justify-self: start;
+}
+.hero-portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center 18%;
+  filter: contrast(1.05) saturate(0.92);
+}
+.portrait-tag {
+  position: absolute;
+  left: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 2;
+}
 @media (min-width: 900px) {
   .hero-stage {
-    grid-template-columns: 1.2fr 0.8fr; grid-template-rows: auto auto;
+    grid-template-columns: 1fr 280px 0.85fr;
+    grid-template-rows: auto;
+    align-items: end;
   }
-  .hero-display { grid-column: 1 / -1; grid-row: 1; }
+  .hero-display {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+  .hero-portrait {
+    grid-column: 2;
+    grid-row: 1;
+    width: 260px;
+    margin: 0 0 1.2rem;
+    align-self: end;
+  }
   .hero-card {
-    grid-column: 2; grid-row: 1; justify-self: end; align-self: end;
-    margin-bottom: 1.5rem; z-index: 2;
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    align-self: end;
+    margin-bottom: 1.5rem;
+    z-index: 3;
   }
+}
+
+
+@media (min-width: 900px) {
   .hero-side { display: none; }
 }
 
