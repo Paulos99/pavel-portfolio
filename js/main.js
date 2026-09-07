@@ -121,8 +121,38 @@
     });
   }
 
-  // Live case previews: load iframes when visible, play scroll reel
-  const previewRoots = document.querySelectorAll("[data-preview]");
+
+  // Live case previews: fit scale + lazy load
+  const PREVIEW_WIDTH = 1280;
+  function fitPreview(root) {
+    const viewport = root.querySelector(".preview-viewport");
+    const frame = root.querySelector(".preview-frame");
+    if (!viewport || !frame) return;
+    const mode = root.getAttribute("data-preview");
+    if (mode === "app" || mode === "interact") {
+      viewport.style.removeProperty("--preview-scale");
+      return;
+    }
+    const w = viewport.clientWidth || root.clientWidth;
+    if (!w) return;
+    const scale = w / PREVIEW_WIDTH;
+    viewport.style.setProperty("--preview-scale", String(scale));
+    // Make viewport tall enough for a "screen" feel
+    const screenH = Math.max(280, Math.round(800 * scale));
+    viewport.style.minHeight = screenH + "px";
+    root.style.minHeight = "auto";
+  }
+
+  const previewRoots = Array.from(document.querySelectorAll("[data-preview]"));
+  previewRoots.forEach((root) => {
+    fitPreview(root);
+    if ("ResizeObserver" in window) {
+      const ro = new ResizeObserver(() => fitPreview(root));
+      ro.observe(root);
+    }
+  });
+  window.addEventListener("resize", () => previewRoots.forEach(fitPreview), { passive: true });
+
   if (previewRoots.length && "IntersectionObserver" in window) {
     const loadIo = new IntersectionObserver(
       (entries) => {
@@ -137,18 +167,19 @@
           if (root.getAttribute("data-preview") === "scroll") {
             frame.classList.add("is-playing");
           }
-          // app/interact: live iframe, no reel
+          fitPreview(root);
           loadIo.unobserve(root);
         });
       },
-      { rootMargin: "200px 0px", threshold: 0.05 }
+      { rootMargin: "220px 0px", threshold: 0.02 }
     );
     previewRoots.forEach((el) => loadIo.observe(el));
   } else {
     document.querySelectorAll(".preview-frame").forEach((frame) => {
       if (frame.dataset.src) frame.setAttribute("src", frame.dataset.src);
-      frame.classList.add("is-playing");
+      if (frame.closest('[data-preview="scroll"]')) frame.classList.add("is-playing");
     });
   }
+
 
 })();
